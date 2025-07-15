@@ -102,6 +102,8 @@ function App() {
   };
 
   const callAnalysisApi = async (sessionId: string, founderType: 'A' | 'B', answers: Answer[]): Promise<CompatibilityReport | { shareUrl: string }> => {
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '';
+    
     const requestData = {
       sessionId,
       founderType,
@@ -114,7 +116,7 @@ function App() {
     };
 
     try {
-      const response = await fetch('/api/analyze-compatibility', {
+      const response = await fetch(`${apiBaseUrl}/api/analyze-compatibility`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -140,8 +142,10 @@ function App() {
   };
 
   const checkSessionStatus = async (sessionId: string): Promise<{ status: SessionStatus; report?: CompatibilityReport }> => {
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '';
+    
     try {
-      const response = await fetch(`/api/session-status/${sessionId}`);
+      const response = await fetch(`${apiBaseUrl}/api/session-status/${sessionId}`);
       
       if (!response.ok) {
         return { status: 'not_found' };
