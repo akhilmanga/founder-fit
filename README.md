@@ -87,19 +87,19 @@ Too many startups fail not due to product-market fit, but because of misaligned 
 
 3. Set environment variables: Create a .env.local file in the root directory with the following:
     ```bash
-    AZURE_AI_TOKEN=abc1234567890abcdef1234567890abcdef
+    VITE_API_BASE_URL=http://localhost:3001
+   AZURE_AI_TOKEN=abc1234567890abcdef1234567890abcdef
    AZURE_AI_ENDPOINT=https://my-openai-instance.openai.azure.com 
    AZURE_AI_MODEL_NAME=gpt-4o
-   NEXT_PUBLIC_SITE_URL=http://localhost:3000
+   NEXT_PUBLIC_SITE_URL=http://localhost:5173
 
 4. Run dev server:
    ```bash
    npm run dev
 
-5. Start backend (in a separate terminal):
+5. Start backend (in a separate terminal from the root directory):
    ```bash
-   cd backend
-   node server.js
+   npm run server
 
 
     
