@@ -274,21 +274,8 @@ function App() {
         }
       });
 
-      // Create a new canvas with white background for better contrast
-      const finalCanvas = document.createElement('canvas');
-      const ctx = finalCanvas.getContext('2d');
-      finalCanvas.width = canvas.width;
-      finalCanvas.height = canvas.height;
-      
-      // Fill with solid white background
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
-      
-      // Draw the captured content on top
-      ctx.drawImage(canvas, 0, 0);
-
       // Convert canvas to blob and download
-      finalCanvas.toBlob((blob) => {
+      canvas.toBlob((blob) => {
         if (blob) {
           const url = URL.createObjectURL(blob);
           const link = document.createElement('a');
