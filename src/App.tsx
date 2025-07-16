@@ -240,7 +240,7 @@ function App() {
   const shareOnTwitter = () => {
     if (!compatibilityReport) return;
     
-    const tweetText = `Just completed the #FounderFit Challenge with my co-founder!\n\nCheck your founder fit here → founderfitcheck.com\n\n#FounderFit`;
+    const tweetText = `Just completed the #FounderFit Challenge with my co-founder!\n\nCheck your founder fit here → https://playful-lebkuchen-dad997.netlify.app\n\n#FounderFit`;
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
     window.open(twitterUrl, '_blank');
   };
@@ -752,7 +752,7 @@ function App() {
                 Analyzing Co-Founder Compatibility
               </h2>
               <p className="text-gray-600 font-medium animate-fadeInUp animation-delay-300">
-                Our AI is comparing both founders' responses and generating your detailed compatibility report...
+                Our AI is comparing both founders responses and generating your detailed compatibility report...
               </p>
             </>
           )}
