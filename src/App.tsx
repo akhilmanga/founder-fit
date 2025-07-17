@@ -777,10 +777,10 @@ function App() {
             {/* Report Card Container */}
             <div id="report-card" className={`bg-white rounded-3xl shadow-2xl border-2 ${getScoreBgColor(compatibilityReport.overallScore)} animate-fadeInScale overflow-hidden`}>
               {/* Header */}
-              <div className="bg-gradient-to-r from-black to-gray-800 text-white p-8 text-center">
+              <div className="bg-gray-900 p-8 text-center">
                 <div className="flex items-center justify-center space-x-3 mb-4">
-                  <Users className="h-8 w-8" />
-                  <h1 className="text-3xl font-bold">FounderFit Challenge</h1>
+                  <Users className="h-8 w-8 text-white" />
+                  <h1 className="text-3xl font-bold text-white">FounderFit Challenge</h1>
                 </div>
                 <p className="text-gray-300 font-medium">Co-Founder Compatibility Report Card</p>
               </div>
