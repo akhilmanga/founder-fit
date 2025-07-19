@@ -1,5 +1,5 @@
 # FounderFit 
-*A free, AI-powered co-founder compatibility tool — no signup required*
+*A free, AI-powered co-founder compatibility tool - no signup required*
 
 ## What is FounderFit?
 
@@ -12,7 +12,9 @@ After both co-founders complete the assessment, FounderFit generates a personali
 - 🌟 Core Strengths  
 - 💡 Personalized Advice  
 
-All in under 5 minutes — with zero friction.
+All in under 5 minutes - with zero friction.
+
+Video Walkthrough: https://youtu.be/RSntYL8cf3w
 
 ---
 
