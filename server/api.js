@@ -1,12 +1,24 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { createClient } from '@supabase/supabase-js';
 
 // Load environment variables
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Initialize Supabase client with service role key for backend operations
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseUrl || !supabaseServiceRoleKey) {
+  console.error('Missing required Supabase environment variables');
+  process.exit(1);
+}
+
+const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
 // Enhanced in-memory session store with status tracking
 const sessions = {};
@@ -247,6 +259,28 @@ Provide specific insights about how well these founders would work together, whe
         sessionData.report = analysisResult;
         sessionData.status = 'analysis_complete';
         sessionData.timestamp = new Date();
+
+        // Save the report to Supabase database
+        try {
+          const { data, error: dbError } = await supabase
+            .from('reports')
+            .insert({
+              session_id: sessionId,
+              report_data: analysisResult,
+              // user_id will be null for now since we don't have authentication yet
+              // When authentication is implemented, you can add: user_id: authenticatedUserId
+            });
+
+          if (dbError) {
+            console.error(`[${sessionId}] Error saving report to Supabase:`, dbError);
+            // Log the error but don't fail the request - the report is still generated
+          } else {
+            console.log(`[${sessionId}] Report saved to Supabase successfully`);
+          }
+        } catch (saveError) {
+          console.error(`[${sessionId}] Unexpected error during Supabase save:`, saveError);
+          // Log the error but don't fail the request
+        }
 
         res.json(analysisResult);
 
