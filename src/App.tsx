@@ -79,13 +79,20 @@ function App() {
 
   useEffect(() => {
     // Check if this is a shared session URL with query parameter
+    console.log('App component mounted. Checking URL for session code...');
     const urlParams = new URLSearchParams(window.location.search);
     const codeParam = urlParams.get('code');
+    console.log('Current URL:', window.location.href);
+    console.log('Current URL search string:', window.location.search);
+    console.log('Extracted code parameter:', codeParam);
     
     if (codeParam) {
       setSessionId(codeParam);
       setFounderType('B');
       setCurrentStep('assessment');
+      console.log('State updated: Founder B assessment started for session:', codeParam);
+    } else {
+      console.log('No code parameter found in URL. Remaining on landing page.');
     }
   }, []);
 
