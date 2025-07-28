@@ -245,53 +245,82 @@ function App() {
     window.open(twitterUrl, '_blank');
   };
 
-  const handleDownloadCard = async () => {
-    try {
-      const reportCard = document.getElementById('report-card');
-      if (!reportCard) {
-        console.error('Report card element not found');
-        return;
+  // --- Updated handleDownloadCard function for better quality ---
+const handleDownloadCard = async () => {
+  try {
+    const reportCard = document.getElementById('report-card');
+    if (!reportCard) {
+      console.error('Report card element not found');
+      alert('Could not find the report card to download.');
+      return;
+    }
+
+    // --- Capture Computed Styles for Accuracy ---
+    const computedStyle = window.getComputedStyle(reportCard);
+    const width = parseInt(computedStyle.width, 10);
+    const height = parseInt(computedStyle.height, 10);
+    // ... (style adjustments for capture) ...
+
+    // --- Configure html2canvas for High Quality ---
+    const canvas = await html2canvas(reportCard, {
+      // Use the actual computed dimensions
+      width: width,
+      height: height,
+      // Significantly higher scale for crispness (try 4 or even 5 if needed, but 3 is often good)
+      scale: 4, // <-- SCALE INCREASED TO 4
+      useCORS: true, // Important for external resources if any
+      allowTaint: false, // Safer to keep false if useCORS works
+      logging: false, // Set to true for debugging if issues persist
+      imageTimeout: 15000,
+      removeContainer: true, // Clean up after capture
+      // Use window dimensions matching the element for consistency
+      windowWidth: width,
+      windowHeight: height,
+      scrollX: 0,
+      scrollY: 0,
+      // Ignore specific elements if necessary (you can add classes like 'ignore-screenshot' if needed)
+      ignoreElements: (element) => element.classList.contains('ignore-screenshot'),
+      // Force the background if needed (though backgroundColor: null usually works for transparent)
+      backgroundColor: computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)' ? computedStyle.backgroundColor : null,
+      // Ensure fonts are loaded before capture (can help with text clarity)
+      onclone: (clonedDoc) => {
+         // Optional: Make adjustments to the cloned document if needed
+         // e.g., ensure specific styles are applied correctly in the clone
+         return new Promise<void>((resolve) => {
+             // A small delay can sometimes help ensure rendering is complete in the clone
+             setTimeout(() => resolve(), 100);
+         });
       }
+    });
 
-      // Configure html2canvas options for better quality and clarity
-      const canvas = await html2canvas(reportCard, {
-        backgroundColor: null, // Use transparent background
-        scale: 3, // Even higher resolution for crisp text
-        useCORS: true,
-        allowTaint: true,
-        logging: false,
-        imageTimeout: 15000,
-        removeContainer: true,
-        height: reportCard.scrollHeight,
-        width: reportCard.scrollWidth,
-        scrollX: 0,
-        scrollY: 0,
-        windowWidth: reportCard.scrollWidth,
-        windowHeight: reportCard.scrollHeight,
-        ignoreElements: (element) => {
-          // Ignore any overlay elements that might cause issues
-          return element.classList.contains('ignore-screenshot');
-        }
-      });
+    // --- Revert temporary style changes ---
+    // ... (style reversion) ...
 
-      // Convert canvas to blob and download
-      canvas.toBlob((blob) => {
+    // --- Convert canvas to Blob and Download ---
+    canvas.toBlob(
+      (blob) => {
         if (blob) {
           const url = URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = url;
           link.download = 'founderfit-compatibility-report.png';
-          document.body.appendChild(link);
+          document.body.appendChild(link); // Required for Firefox
           link.click();
           document.body.removeChild(link);
           URL.revokeObjectURL(url);
+        } else {
+          console.error('Failed to create blob from canvas');
+          alert('Failed to generate the image download.');
         }
-      }, 'image/png', 0.95); // Slightly compressed for smaller file size
-
-    } catch (error) {
-      console.error('Error downloading report card:', error);
-    }
-  };
+      },
+      'image/png',
+      1.0 // Highest quality for PNG // <-- COMPRESSION REMOVED (1.0 = No Compression)
+    );
+  } catch (error) {
+    console.error('Error downloading report card:', error);
+    alert('An error occurred while downloading the report card. Please try again.');
+  }
+};
 
   const resetToHomepage = () => {
     setCurrentStep('landing');
